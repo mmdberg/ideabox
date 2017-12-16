@@ -1,0 +1,74 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto Slab', serif;
+  margin: auto;
+}
+
+input {
+  outline: none;
+}
+
+header {
+  background-color: #E5F3F2;
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  color: #00A79D;
+  font-size: 2em;
+
+}
+
+span {
+  color: #6D6E71;
+}
+
+
+.idea-body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.inputs {
+  display: block;
+  max-width: 360px;
+  width: 50%;
+}
+
+.title-input {
+  margin-bottom: 5px;
+}
+
+.save-button {
+  border-radius: 0;
+  border: none;
+  background-color: #00A79D;
+  color: #FFFFFF;
+  max-width: 360px;
+  width: 50%;
+  margin: 5px 0 10px 0;
+}
+
+.save-button:hover {
+  background-color: #045E55;
+}
+
+::placeholder {
+  color: #C1C2C4;
+}
+
+.search {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.search-input {
+  max-width: 360px;
+  width: 50%;
+}
+
+.card {
+  border: solid black;
+  max-width: 360px;
+  width: 50%;
+}
