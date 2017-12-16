@@ -16,23 +16,19 @@ header {
 
 .title {
   color: #00A79D;
-  font-size: 2em;
-
+  font-size: 2.5em;
+  margin-bottom: 15px;
 }
 
 span {
   color: #6D6E71;
 }
 
-
-.idea-body {
-  font-family: 'Open Sans', sans-serif;
-}
-
 .inputs {
   display: block;
-  max-width: 360px;
+  max-width: 500px;
   width: 50%;
+  font-size: 1em;
 }
 
 .title-input {
@@ -44,9 +40,11 @@ span {
   border: none;
   background-color: #00A79D;
   color: #FFFFFF;
-  max-width: 360px;
+  max-width: 500px;
   width: 50%;
   margin: 5px 0 10px 0;
+  outline: none;
+  font-size: 1em;
 }
 
 .save-button:hover {
@@ -63,12 +61,67 @@ span {
 }
 
 .search-input {
-  max-width: 360px;
+  max-width: 500px;
   width: 50%;
+  font-size: 1em;
 }
 
 .card {
-  border: solid black;
-  max-width: 360px;
+  max-width: 500px;
   width: 50%;
+  position: relative;
+  border-bottom: 1px solid #d1d3d4;
 }
+
+.card-title {
+  color: #6D6E71;
+  display: inline-block;
+  font-size: 1.2em;
+
+}
+
+.card-body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: .75em;
+  color: #939598;
+  margin: 5px 0px;
+}
+
+.card-buttons {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.icon {
+  width: 20px;
+}
+
+.delete-button {
+  position: absolute;
+  right: 2px;
+  top: 0px;
+}
+
+.up-vote {
+  position: relative;
+  top: 6px;
+}
+
+.down-vote {
+  margin: 0 7px;
+  position: relative;
+  top: 6px;
+}
+
+.quality {
+  color: #6D6E71;
+  display: inline;
+  font-size: .75em;
+}
+
+nav {
+  margin-bottom: 20px;
+}
+
