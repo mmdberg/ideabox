@@ -4,26 +4,30 @@ var $saveButton = $('.save-button');
 var $ideaList = $('.idea-list');
 
 $saveButton.on('click', preventDefault);
-// $saveButton.on('click', MakeCard);
-// $saveButton.on('click', );
-console.log($saveButton);
 
 function preventDefault(event) {
   event.preventDefault();
   var newCard = new MakeCard($title.val(), $body.val());
   newCard.appendCard();
-}
+  var objectToStore = { title: $title.val(), body: $body.val() };
+  var stringifiedObject = JSON.stringify(objectToStore);
+  console.log(stringifiedObject);
+  localStorage.setItem('cardtocardlist', stringifiedObject);
+  $title.val('');
+  $body.val('');
+};
 
-function MakeCard(title, body) {
+function MakeCard(title, body, id) {
   console.log('hi');
   this.title = title;
   this.body = body;
   this.quality = "swill";
+  this.id = id;
   }; 
 
 MakeCard.prototype.appendCard = function(){
   console.log('gothere');
-  $ideaList.append(
+  $ideaList.prepend(
       `<article class="card">
       <h2 class="card-title">${this.title}</h2>
       <button class="card-buttons delete-button"><img class="icon" src="FEE-ideabox-icon-assets/delete.svg" alt=""></button>
@@ -36,3 +40,7 @@ MakeCard.prototype.appendCard = function(){
     </article>`
     )
 };
+
+
+
+
