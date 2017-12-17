@@ -11,22 +11,19 @@ function preventDefault(event) {
   newCard.appendCard();
   var objectToStore = { title: $title.val(), body: $body.val() };
   var stringifiedObject = JSON.stringify(objectToStore);
-  console.log(stringifiedObject);
-  localStorage.setItem('cardtocardlist', stringifiedObject);
+  localStorage.setItem(stringifiedObject, stringifiedObject);
   $title.val('');
   $body.val('');
 };
 
-function MakeCard(title, body, id) {
+function MakeCard(title, body) {
   console.log('hi');
   this.title = title;
   this.body = body;
   this.quality = "swill";
-  this.id = id;
   }; 
 
 MakeCard.prototype.appendCard = function(){
-  console.log('gothere');
   $ideaList.prepend(
       `<article class="card">
       <h2 class="card-title">${this.title}</h2>
