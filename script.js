@@ -5,6 +5,7 @@ var $ideaList = $('.idea-list');
 
 $saveButton.on('click', preventDefault);
 
+
 function preventDefault(event) {
   event.preventDefault();
   var newCard = new MakeCard($title.val(), $body.val(), (new Date()).getTime());
@@ -59,6 +60,10 @@ function retrieveCard(){
     </article>`)
 }}
 
+$('.card').on('click', '.delete-button', deleteCard);
 
-
+function deleteCard() {
+  this.closest('article').remove();
+  // localStorage.removeItem();
+}
 
