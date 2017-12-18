@@ -2,8 +2,11 @@ var $title = $('.title-input');
 var $body = $('.body-input');
 var $saveButton = $('.save-button');
 var $ideaList = $('.idea-list');
+// var $upVote = $('.up-vote');
+// var $downVote = $('.down-vote');
 
 $saveButton.on('click', preventDefault);
+
 
 function preventDefault(event) {
   event.preventDefault();
@@ -22,7 +25,7 @@ function MakeCard(title, body, uniqueid) {
   var objectToStore = { title: $title.val(), body: $body.val() };
   var stringifiedObject = JSON.stringify(objectToStore);
   localStorage.setItem(this.uniqueid, stringifiedObject);
-  }; 
+}; 
 
 MakeCard.prototype.appendCard = function(){
   $ideaList.prepend(
@@ -57,8 +60,18 @@ function retrieveCard(){
         <p class="quality">quality: ${parsedObject.quality}</p>
       </nav>
     </article>`)
-}}
+}};
 
-
-
+$('nav').on('click', '.up-vote', function (){
+  console.log('up!');
+  if (this.closest('p') == 'quality: swill') {
+    console.log('swillsucks');
+    this.quality.text('plausible')
+  } else if (this.closest('p') == 'quality: plausible') {
+    this.quality.text('genius') 
+  }
+});
+// $ideaList.on('click', $('.down-vote'), function (){
+//   console.log('downbuttonworking')
+// });
 
