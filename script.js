@@ -58,23 +58,47 @@ function retrieveCard(){
     </article>`)
 }};
 
+function getFromStorage(id){
+}
+
+function pushToStorage(id, object){
+  var stringifiedObject = JSON.stringify(object);
+  localStorage.setItem(id, stringifiedObject);
+}
+
 $('.idea-list').on('click', '.up-vote', function() {
   if ($(this).closest('nav').children('p').text() === 'quality: swill') 
-    {$(this).siblings('.quality').text('quality: plausible')
+    {$(this).siblings('.quality').text('quality: plausible');
+    var id = this.closest('article').getAttribute('id');
+    var retrievedObject = localStorage.getItem(id);
+    var parsedObject = JSON.parse(retrievedObject);
+    parsedObject.quality = 'plausible';
+    pushToStorage(id, parsedObject);
+
   } else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
     {$(this).siblings('.quality').text('quality: genius')
+    var id = this.closest('article').getAttribute('id');
+    var retrievedObject = localStorage.getItem(id);
+    var parsedObject = JSON.parse(retrievedObject);;
+    parsedObject.quality = 'genius';
+    pushToStorage(id, parsedObject);
 }
 });
 
 $('.idea-list').on('click', '.down-vote', function (){
   if ($(this).closest('nav').children('p').text() === 'quality: genius') 
-    {$(this).siblings('.quality').text('quality: plausible')
+    {$(this).siblings('.quality').text('quality: plausible');
+    var id = this.closest('article').getAttribute('id');
+    var retrievedObject = localStorage.getItem(id);
+    var parsedObject = JSON.parse(retrievedObject);;
+    parsedObject.quality = 'plausible';
+    pushToStorage(id, parsedObject);
   } else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
-    {$(this).siblings('.quality').text('quality: swill')
+    {$(this).siblings('.quality').text('quality: swill');
+    var id = this.closest('article').getAttribute('id');
+    var retrievedObject = localStorage.getItem(id);
+    var parsedObject = JSON.parse(retrievedObject);
+    parsedObject.quality = 'swill';
+    pushToStorage(id, parsedObject);
 }
 });
-
-  // this.closest('.card').getId
-  //getItem(id)
-  //do something
-
