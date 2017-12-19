@@ -20,14 +20,14 @@ function MakeCard(title, body, uniqueid) {
   this.quality = "swill";
   this.uniqueid = uniqueid;
   console.log(this.uniqueid);
-  var objectToStore = { title: $title.val(), body: $body.val() };
+  var objectToStore = { uniqueid: this.uniqueid, title: $title.val(), body: $body.val(), quality: this.quality};
   var stringifiedObject = JSON.stringify(objectToStore);
   localStorage.setItem(this.uniqueid, stringifiedObject);
   }; 
 
 MakeCard.prototype.appendCard = function(){
   $ideaList.prepend(
-      `<article class="card">
+      `<article class="card" id="${this.uniqueid}">
       <h2 class="card-title">${this.title}</h2>
       <button class="card-buttons delete-button"><img class="icon" src="FEE-ideabox-icon-assets/delete.svg" alt=""></button>
       <p class="card-body">${this.body}</p>
@@ -48,7 +48,7 @@ function retrieveCard(){
   var retrievedObject = localStorage.getItem(localStorage.key(i));
   var parsedObject = JSON.parse(retrievedObject);
   $ideaList.prepend(
-      `<article class="card">
+      `<article class="card" id="${parsedObject.uniqueid}">
       <h2 class="card-title">${parsedObject.title}</h2>
       <button class="card-buttons delete-button"><img class="icon" src="FEE-ideabox-icon-assets/delete.svg" alt=""></button>
       <p class="card-body">${parsedObject.body}</p>
@@ -60,10 +60,11 @@ function retrieveCard(){
     </article>`)
 }}
 
-$('.card').on('click', '.delete-button', deleteCard);
+$('.idea-list').on('click', '.delete-button', deleteCard);
 
 function deleteCard() {
+  var id = this.closest('article').getAttribute('id');
+  localStorage.removeItem(id);
   this.closest('article').remove();
-  // localStorage.removeItem();
 }
 
