@@ -13,10 +13,10 @@ function preventDefault(event) {
   $body.val('');
 };
 
-function MakeCard(title, body, quality, uniqueid) {
+function MakeCard(title, body, uniqueid) {
   this.title = title;
   this.body = body;
-  this.quality = quality || "swill";
+  this.quality = "swill";
   this.uniqueid = uniqueid;
   console.log(this.uniqueid);
   var objectToStore = { uniqueid: this.uniqueid, title: $title.val(), body: $body.val(), quality: this.quality };
@@ -28,11 +28,11 @@ MakeCard.prototype.appendCard = function(){
   $ideaList.prepend(
     `<article class="card" id="${this.uniqueid}">
       <h2 class="card-title">${this.title}</h2>
-      <button class="card-buttons delete-button"><img class="icon" src="FEE-ideabox-icon-assets/delete.svg" alt=""></button>
+      <button class="card-buttons delete-button"></button>
       <p class="card-body">${this.body}</p>
       <nav>
-        <button class="card-buttons up-vote"><img class="icon" src="FEE-ideabox-icon-assets/upvote.svg" alt=""></button>
-        <button class="card-buttons down-vote"><img class="icon" src="FEE-ideabox-icon-assets/downvote.svg" alt=""></button>
+        <button class="card-buttons up-vote"></button>
+        <button class="card-buttons down-vote"></button>
         <p class="quality">quality: ${this.quality}</p>
       </nav>
     </article>`)
@@ -48,11 +48,11 @@ function retrieveCard(){
   $ideaList.prepend(
       `<article class="card" id="${parsedObject.uniqueid}">
       <h2 class="card-title">${parsedObject.title}</h2>
-      <button class="card-buttons delete-button"><img class="icon" src="FEE-ideabox-icon-assets/delete.svg" alt=""></button>
+      <button class="card-buttons delete-button"></button>
       <p class="card-body">${parsedObject.body}</p>
       <nav>
-        <button class="card-buttons up-vote"><img class="icon" src="FEE-ideabox-icon-assets/upvote.svg" alt=""></button>
-        <button class="card-buttons down-vote"><img class="icon" src="FEE-ideabox-icon-assets/downvote.svg" alt=""></button>
+        <button class="card-buttons up-vote"></button>
+        <button class="card-buttons down-vote"></button>
         <p class="quality">quality: ${parsedObject.quality}</p>
       </nav>
     </article>`)
