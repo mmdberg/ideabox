@@ -5,6 +5,7 @@ var $ideaList = $('.idea-list');
 
 $saveButton.on('click', preventDefault);
 
+
 function preventDefault(event) {
   event.preventDefault();
   var newCard = new MakeCard($title.val(), $body.val(), (new Date()).getTime());
@@ -19,7 +20,7 @@ function MakeCard(title, body, uniqueid) {
   this.quality = "swill";
   this.uniqueid = uniqueid;
   console.log(this.uniqueid);
-  var objectToStore = { uniqueid: this.uniqueid, title: $title.val(), body: $body.val(), quality: this.quality };
+  var objectToStore = {uniqueid: this.uniqueid, title: $title.val(), body: $body.val(), quality: this.quality};
   var stringifiedObject = JSON.stringify(objectToStore);
   localStorage.setItem(this.uniqueid, stringifiedObject);
 }; 
@@ -74,8 +75,7 @@ $('.idea-list').on('click', '.up-vote', function() {
     var parsedObject = JSON.parse(retrievedObject);
     parsedObject.quality = 'plausible';
     pushToStorage(id, parsedObject);
-
-  } else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
+ } else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
     {$(this).siblings('.quality').text('quality: genius')
     var id = this.closest('article').getAttribute('id');
     var retrievedObject = localStorage.getItem(id);
@@ -102,3 +102,10 @@ $('.idea-list').on('click', '.down-vote', function (){
     pushToStorage(id, parsedObject);
 }
 });
+
+$('.idea-list').on('click', '.delete-button', deleteCard);
+function deleteCard() {
+  var id = this.closest('article').getAttribute('id');
+  localStorage.removeItem(id);
+  this.closest('article').remove();
+}
