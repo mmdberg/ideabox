@@ -7,7 +7,6 @@ var $ideaList = $('.idea-list');
 
 $saveButton.on('click', preventDefault);
 
-
 function preventDefault(event) {
   event.preventDefault();
   var newCard = new MakeCard($title.val(), $body.val(), (new Date()).getTime());
@@ -16,20 +15,20 @@ function preventDefault(event) {
   $body.val('');
 };
 
-function MakeCard(title, body, uniqueid) {
+function MakeCard(title, body, quality, uniqueid) {
   this.title = title;
   this.body = body;
-  this.quality = "swill";
+  this.quality = quality || "swill";
   this.uniqueid = uniqueid;
   console.log(this.uniqueid);
-  var objectToStore = { title: $title.val(), body: $body.val() };
+  var objectToStore = { uniqueid: this.uniqueid, title: $title.val(), body: $body.val(), quality: this.quality };
   var stringifiedObject = JSON.stringify(objectToStore);
   localStorage.setItem(this.uniqueid, stringifiedObject);
 }; 
 
 MakeCard.prototype.appendCard = function(){
   $ideaList.prepend(
-      `<article class="card">
+    `<article class="card" id="${this.uniqueid}">
       <h2 class="card-title">${this.title}</h2>
       <button class="card-buttons delete-button"><img class="icon" src="FEE-ideabox-icon-assets/delete.svg" alt=""></button>
       <p class="card-body">${this.body}</p>
@@ -50,7 +49,7 @@ function retrieveCard(){
   var retrievedObject = localStorage.getItem(localStorage.key(i));
   var parsedObject = JSON.parse(retrievedObject);
   $ideaList.prepend(
-      `<article class="card">
+      `<article class="card" id="${parsedObject.uniqueid}">
       <h2 class="card-title">${parsedObject.title}</h2>
       <button class="card-buttons delete-button"><img class="icon" src="FEE-ideabox-icon-assets/delete.svg" alt=""></button>
       <p class="card-body">${parsedObject.body}</p>
@@ -62,16 +61,27 @@ function retrieveCard(){
     </article>`)
 }};
 
-$('nav').on('click', '.up-vote', function (){
-  console.log('up!');
-  if (this.closest('p') == 'quality: swill') {
-    console.log('swillsucks');
-    this.quality.text('plausible')
-  } else if (this.closest('p') == 'quality: plausible') {
-    this.quality.text('genius') 
-  }
+$('.idea-list').on('click', '.up-vote', function() {
+
+if ($(this).closest('nav').children('p').text() === 'quality: swill') 
+  {$(this).siblings('.quality').text('quality: plausible')
+} else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
+  {$(this).siblings('.quality').text('quality: genius')
+}
+
+  // this.closest('.card').getId
+
+  //getItem(id)
+  //do something
+})
+
+
+$('.idea-list').on('click', '.down-vote', function (){
+  if ($(this).closest('nav').children('p').text() === 'quality: genius') 
+  {$(this).siblings('.quality').text('quality: plausible')
+} else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
+  {$(this).siblings('.quality').text('quality: swill')
+}
+
 });
-// $ideaList.on('click', $('.down-vote'), function (){
-//   console.log('downbuttonworking')
-// });
 
