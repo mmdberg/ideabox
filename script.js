@@ -2,8 +2,6 @@ var $title = $('.title-input');
 var $body = $('.body-input');
 var $saveButton = $('.save-button');
 var $ideaList = $('.idea-list');
-// var $upVote = $('.up-vote');
-// var $downVote = $('.down-vote');
 
 $saveButton.on('click', preventDefault);
 
@@ -37,8 +35,7 @@ MakeCard.prototype.appendCard = function(){
         <button class="card-buttons down-vote"><img class="icon" src="FEE-ideabox-icon-assets/downvote.svg" alt=""></button>
         <p class="quality">quality: ${this.quality}</p>
       </nav>
-    </article>`
-    )
+    </article>`)
 };
 
 retrieveCard();
@@ -62,26 +59,22 @@ function retrieveCard(){
 }};
 
 $('.idea-list').on('click', '.up-vote', function() {
-
-if ($(this).closest('nav').children('p').text() === 'quality: swill') 
-  {$(this).siblings('.quality').text('quality: plausible')
-} else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
-  {$(this).siblings('.quality').text('quality: genius')
+  if ($(this).closest('nav').children('p').text() === 'quality: swill') 
+    {$(this).siblings('.quality').text('quality: plausible')
+  } else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
+    {$(this).siblings('.quality').text('quality: genius')
 }
-
-  // this.closest('.card').getId
-
-  //getItem(id)
-  //do something
-})
-
+});
 
 $('.idea-list').on('click', '.down-vote', function (){
   if ($(this).closest('nav').children('p').text() === 'quality: genius') 
-  {$(this).siblings('.quality').text('quality: plausible')
-} else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
-  {$(this).siblings('.quality').text('quality: swill')
+    {$(this).siblings('.quality').text('quality: plausible')
+  } else if ($(this).closest('nav').children('p').text() === 'quality: plausible')
+    {$(this).siblings('.quality').text('quality: swill')
 }
-
 });
+
+  // this.closest('.card').getId
+  //getItem(id)
+  //do something
 
