@@ -4,6 +4,8 @@ var $saveButton = $('.save-button');
 var $ideaList = $('.idea-list');
 
 $saveButton.on('click', preventDefault);
+$ideaList.on('blur', 'h2', editTitle);
+$ideaList.on('blur', '.card-body', editBody);
 
 
 function preventDefault(event) {
@@ -28,9 +30,9 @@ function MakeCard(title, body, uniqueid) {
 MakeCard.prototype.appendCard = function(){
   $ideaList.prepend(
     `<article class="card" id="${this.uniqueid}">
-      <h2 class="card-title">${this.title}</h2>
+      <h2 class="card-title" contenteditable="true">${this.title}</h2>
       <button class="card-buttons delete-button"></button>
-      <p class="card-body">${this.body}</p>
+      <p class="card-body" contenteditable="true">${this.body}</p>
       <nav>
         <button class="card-buttons up-vote"></button>
         <button class="card-buttons down-vote"></button>
@@ -40,7 +42,6 @@ MakeCard.prototype.appendCard = function(){
 };
 
 retrieveCard();
-console.log(localStorage.length);
 
 function retrieveCard(){
   for(var i=0; i < localStorage.length; i++) {
@@ -48,9 +49,9 @@ function retrieveCard(){
   var parsedObject = JSON.parse(retrievedObject);
   $ideaList.prepend(
       `<article class="card" id="${parsedObject.uniqueid}">
-      <h2 class="card-title">${parsedObject.title}</h2>
+      <h2 class="card-title" contenteditable="true">${parsedObject.title}</h2>
       <button class="card-buttons delete-button"></button>
-      <p class="card-body">${parsedObject.body}</p>
+      <p class="card-body" contenteditable="true">${parsedObject.body}</p>
       <nav>
         <button class="card-buttons up-vote"></button>
         <button class="card-buttons down-vote"></button>
@@ -58,9 +59,6 @@ function retrieveCard(){
       </nav>
     </article>`)
 }};
-
-function getFromStorage(id){
-}
 
 function pushToStorage(id, object){
   var stringifiedObject = JSON.stringify(object);
@@ -71,6 +69,7 @@ $('.idea-list').on('click', '.up-vote', function() {
   if ($(this).closest('nav').children('p').text() === 'quality: swill') 
     {$(this).siblings('.quality').text('quality: plausible');
     var id = this.closest('article').getAttribute('id');
+    console.log(id);
     var retrievedObject = localStorage.getItem(id);
     var parsedObject = JSON.parse(retrievedObject);
     parsedObject.quality = 'plausible';
@@ -109,3 +108,28 @@ function deleteCard() {
   localStorage.removeItem(id);
   this.closest('article').remove();
 }
+
+function editTitle(card) {
+  var id = this.closest('article').getAttribute('id');
+  var newTitle = $(this).closest('.card-title').text();
+  var retrievedObject = localStorage.getItem(id);
+  var parsedObject = JSON.parse(retrievedObject);
+  parsedObject.title = newTitle;
+  pushToStorage(id, parsedObject);
+}
+
+function editBody(card) {
+  var id = this.closest('article').getAttribute('id');
+  var newTitle = $(this).closest('.card-body').text();
+  var retrievedObject = localStorage.getItem(id);
+  var parsedObject = JSON.parse(retrievedObject);
+  parsedObject.body = newTitle;
+  pushToStorage(id, parsedObject);
+}
+
+
+
+
+
+
+
