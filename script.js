@@ -5,7 +5,6 @@ var $ideaList = $('.idea-list');
 
 $saveButton.on('click', preventDefault);
 
-
 function preventDefault(event) {
   event.preventDefault();
   var newCard = new MakeCard($title.val(), $body.val(), (new Date()).getTime());
