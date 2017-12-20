@@ -7,6 +7,7 @@ $saveButton.on('click', preventDefault);
 $ideaList.on('blur', 'h2', editTitle);
 $ideaList.on('blur', '.card-body', editBody);
 
+retrieveCard();
 
 function preventDefault(event) {
   event.preventDefault();
@@ -21,7 +22,6 @@ function MakeCard(title, body, uniqueid) {
   this.body = body;
   this.quality = "swill";
   this.uniqueid = uniqueid;
-  console.log(this.uniqueid);
   var objectToStore = {uniqueid: this.uniqueid, title: $title.val(), body: $body.val(), quality: this.quality};
   var stringifiedObject = JSON.stringify(objectToStore);
   localStorage.setItem(this.uniqueid, stringifiedObject);
@@ -40,8 +40,6 @@ MakeCard.prototype.appendCard = function(){
       </nav>
     </article>`)
 };
-
-retrieveCard();
 
 function retrieveCard(){
   for(var i=0; i < localStorage.length; i++) {
@@ -126,10 +124,3 @@ function editBody(card) {
   parsedObject.body = newTitle;
   pushToStorage(id, parsedObject);
 }
-
-
-
-
-
-
-
