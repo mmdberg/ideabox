@@ -4,15 +4,14 @@ var $saveButton = $('.save-button');
 var $ideaList = $('.idea-list');
 var $searchBar = $('.search-input');
 
-$saveButton.on('click', preventDefault);
+$saveButton.on('click', newIdea);
 $ideaList.on('blur', 'h2', editTitle);
 $ideaList.on('blur', '.card-body', editBody);
-$searchBar.on('keyup', searchTitle);
-$searchBar.on('keyup', searchBody);
+$searchBar.on('keyup', searchList);
 
 retrieveCard();
 
-function preventDefault(event) {
+function newIdea(event) {
   event.preventDefault();
   var newCard = new MakeCard($title.val(), $body.val(), (new Date()).getTime());
   newCard.appendCard();
@@ -70,7 +69,6 @@ $('.idea-list').on('click', '.up-vote', function() {
   if ($(this).closest('nav').children('p').text() === 'quality: swill') 
     {$(this).siblings('.quality').text('quality: plausible');
     var id = this.closest('article').getAttribute('id');
-    console.log(id);
     var retrievedObject = localStorage.getItem(id);
     var parsedObject = JSON.parse(retrievedObject);
     parsedObject.quality = 'plausible';
@@ -126,28 +124,19 @@ function editBody(card) {
   pushToStorage(id, parsedObject);
 };
 
-function searchTitle(e) {
+function searchList(e) {
   event.preventDefault();
   var titles = $('h2');
-  var eachtitle = '';
-  for (var i = 0; i<titles.length; i++) { 
-    eachtitle = titles[i].innerText;
-    var searchInput = eachtitle.includes($searchBar.val());
-  if (searchInput === false) {
-    $($('h2')[i]).parent().hide();
-  } else if (searchInput === true) {
-    $($('h2')[i]).parent().show();
-}}};
-
-function searchBody(event) {
-  event.preventDefault();
   var bodies = $('.card-body');
+  var eachtitle = '';
   var eachbody = '';
-  for (var i = 0; i<bodies.length; i++) { 
+  for (var i = 0; i < (titles.length || bodies.length); i++) { 
+    eachtitle = titles[i].innerText;
     eachbody = bodies[i].innerText;
-    var searchInput = eachbody.includes($searchBar.val());
-  if (searchInput === false) {
-    $($('.card-body')[i]).parent().hide();
-  } else if (searchInput === true) {
-    $($('.card-body')[i]).parent().show();
+    var searchInputTitle = eachtitle.includes($searchBar.val());
+    var searchInputBody = eachbody.includes($searchBar.val());
+  if (searchInputTitle === false && searchInputBody === false) {
+    $($('h2')[i]).parent().hide();
+  } else if (searchInputTitle === true || searchInputBody === true) {
+    $($('h2')[i]).parent().show();
 }}};
