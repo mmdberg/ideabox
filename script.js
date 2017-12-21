@@ -4,14 +4,14 @@ var $saveButton = $('.save-button');
 var $ideaList = $('.idea-list');
 var $searchBar = $('.search-input');
 
-$saveButton.on('click', preventDefault);
+$saveButton.on('click', newIdea);
 $ideaList.on('blur', 'h2', editTitle);
 $ideaList.on('blur', '.card-body', editBody);
-$searchBar.on('keyup', searchTitle);
+$searchBar.on('keyup', searchList);
 
 retrieveCard();
 
-function preventDefault(event) {
+function newIdea(event) {
   event.preventDefault();
   var newCard = new MakeCard($title.val(), $body.val(), (new Date()).getTime());
   newCard.appendCard();
@@ -69,7 +69,6 @@ $('.idea-list').on('click', '.up-vote', function() {
   if ($(this).closest('nav').children('p').text() === 'quality: swill') 
     {$(this).siblings('.quality').text('quality: plausible');
     var id = this.closest('article').getAttribute('id');
-    console.log(id);
     var retrievedObject = localStorage.getItem(id);
     var parsedObject = JSON.parse(retrievedObject);
     parsedObject.quality = 'plausible';
@@ -125,7 +124,7 @@ function editBody(card) {
   pushToStorage(id, parsedObject);
 };
 
-function searchTitle(e) {
+function searchList(e) {
   event.preventDefault();
   var titles = $('h2');
   var bodies = $('.card-body');
@@ -138,6 +137,6 @@ function searchTitle(e) {
     var searchInputBody = eachbody.includes($searchBar.val());
   if (searchInputTitle === false && searchInputBody === false) {
     $($('h2')[i]).parent().hide();
-  } else if (searchInputTitle === true || searchInputBody === false) {
+  } else if (searchInputTitle === true || searchInputBody === true) {
     $($('h2')[i]).parent().show();
 }}};
