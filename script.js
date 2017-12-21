@@ -2,10 +2,13 @@ var $title = $('.title-input');
 var $body = $('.body-input');
 var $saveButton = $('.save-button');
 var $ideaList = $('.idea-list');
+var $searchBar = $('.search-input');
 
 $saveButton.on('click', preventDefault);
 $ideaList.on('blur', 'h2', editTitle);
 $ideaList.on('blur', '.card-body', editBody);
+$searchBar.on('keyup', searchTitle);
+$searchBar.on('keyup', searchBody);
 
 retrieveCard();
 
@@ -79,8 +82,7 @@ $('.idea-list').on('click', '.up-vote', function() {
     var parsedObject = JSON.parse(retrievedObject);;
     parsedObject.quality = 'genius';
     pushToStorage(id, parsedObject);
-}
-});
+}});
 
 $('.idea-list').on('click', '.down-vote', function (){
   if ($(this).closest('nav').children('p').text() === 'quality: genius') 
@@ -97,15 +99,14 @@ $('.idea-list').on('click', '.down-vote', function (){
     var parsedObject = JSON.parse(retrievedObject);
     parsedObject.quality = 'swill';
     pushToStorage(id, parsedObject);
-}
-});
+}});
 
 $('.idea-list').on('click', '.delete-button', deleteCard);
 function deleteCard() {
   var id = this.closest('article').getAttribute('id');
   localStorage.removeItem(id);
   this.closest('article').remove();
-}
+};
 
 function editTitle(card) {
   var id = this.closest('article').getAttribute('id');
@@ -114,7 +115,7 @@ function editTitle(card) {
   var parsedObject = JSON.parse(retrievedObject);
   parsedObject.title = newTitle;
   pushToStorage(id, parsedObject);
-}
+};
 
 function editBody(card) {
   var id = this.closest('article').getAttribute('id');
@@ -123,4 +124,30 @@ function editBody(card) {
   var parsedObject = JSON.parse(retrievedObject);
   parsedObject.body = newTitle;
   pushToStorage(id, parsedObject);
-}
+};
+
+function searchTitle(e) {
+  event.preventDefault();
+  var titles = $('h2');
+  var eachtitle = '';
+  for (var i = 0; i<titles.length; i++) { 
+    eachtitle = titles[i].innerText;
+    var searchInput = eachtitle.includes($searchBar.val());
+  if (searchInput === false) {
+    $($('h2')[i]).parent().hide();
+  } else if (searchInput === true) {
+    $($('h2')[i]).parent().show();
+}}};
+
+function searchBody(event) {
+  event.preventDefault();
+  var bodies = $('.card-body');
+  var eachbody = '';
+  for (var i = 0; i<bodies.length; i++) { 
+    eachbody = bodies[i].innerText;
+    var searchInput = eachbody.includes($searchBar.val());
+  if (searchInput === false) {
+    $($('.card-body')[i]).parent().hide();
+  } else if (searchInput === true) {
+    $($('.card-body')[i]).parent().show();
+}}};
