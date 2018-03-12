@@ -8,8 +8,12 @@ $saveButton.on('click', newIdea);
 $ideaList.on('blur', 'h2', editTitle);
 $ideaList.on('blur', '.card-body', editBody);
 $searchBar.on('keyup', searchList);
+$ideaList.on('click', '.delete-button', deleteCard);
+$ideaList.on('click', '.up-vote', qualityChange);
+$ideaList.on('click', '.down-vote', qualityChange);
 
-retrieveCard();
+
+retrieveCards();
 
 function newIdea(event) {
   event.preventDefault();
@@ -26,10 +30,10 @@ function MakeCard(title, body, uniqueid) {
   this.uniqueid = uniqueid;
   var objectToStore = {uniqueid: this.uniqueid, title: $title.val(), body: $body.val(), quality: this.quality};
   var stringifiedObject = JSON.stringify(objectToStore);
-  localStorage.setItem(this.uniqueid, stringifiedObject);
+  localStorage.setItem(uniqueid, stringifiedObject);
 }; 
 
-MakeCard.prototype.appendCard = function(){
+MakeCard.prototype.appendCard = function() {
   $ideaList.prepend(
     `<article class="card" id="${this.uniqueid}">
       <h2 class="card-title" contenteditable="true">${this.title}</h2>
@@ -38,26 +42,28 @@ MakeCard.prototype.appendCard = function(){
       <nav>
         <button class="card-buttons up-vote"></button>
         <button class="card-buttons down-vote"></button>
-        <p class="quality">quality: ${this.quality}</p>
+        <h3 class="vote">quality: </h3>
+        <p class="quality"> ${this.quality}</p>
       </nav>
     </article>`)
 };
 
-function retrieveCard(){
-  for(var i=0; i < localStorage.length; i++) {
+function retrieveCards() {
+  for(var i = 0; i < localStorage.length; i++) {
     var retrievedObject = localStorage.getItem(localStorage.key(i));
     var parsedObject = JSON.parse(retrievedObject);
-  $ideaList.prepend(
-      `<article class="card" id="${parsedObject.uniqueid}">
-      <h2 class="card-title" contenteditable="true">${parsedObject.title}</h2>
-      <button class="card-buttons delete-button"></button>
-      <p class="card-body" contenteditable="true">${parsedObject.body}</p>
-      <nav>
-        <button class="card-buttons up-vote"></button>
-        <button class="card-buttons down-vote"></button>
-        <p class="quality">quality: ${parsedObject.quality}</p>
-      </nav>
-    </article>`)
+    $ideaList.prepend(
+        `<article class="card" id="${parsedObject.uniqueid}">
+        <h2 class="card-title" contenteditable="true">${parsedObject.title}</h2>
+        <button class="card-buttons delete-button"></button>
+        <p class="card-body" contenteditable="true">${parsedObject.body}</p>
+        <nav>
+          <button class="card-buttons up-vote"></button>
+          <button class="card-buttons down-vote"></button>
+          <h3 class="vote">quality: </h3>
+          <p class="quality"> ${parsedObject.quality}</p>
+        </nav>
+      </article>`)
   }
 }
 
@@ -66,50 +72,40 @@ function pushToStorage(id, object) {
   localStorage.setItem(id, stringifiedObject);
 }
 
-$('.idea-list').on('click', '.up-vote', function() {
-  if ($(this).closest('nav').children('p').text() === 'quality: swill') {
-      $(this).siblings('.quality').text('quality: plausible');
-      var id = this.closest('article').getAttribute('id');
-      var retrievedObject = localStorage.getItem(id);
-      var parsedObject = JSON.parse(retrievedObject);
-      parsedObject.quality = 'plausible';
-      pushToStorage(id, parsedObject);
-  } else if ($(this).closest('nav').children('p').text() === 'quality: plausible') {
-      $(this).siblings('.quality').text('quality: genius');
-      var id = this.closest('article').getAttribute('id');
-      var retrievedObject = localStorage.getItem(id);
-      var parsedObject = JSON.parse(retrievedObject);;
-      parsedObject.quality = 'genius';
-      pushToStorage(id, parsedObject);
+function qualityChange() {
+  var qualityArray = [
+  'swill',
+  'plausible',
+  'genius'
+  ]
+
+  var vote = $(this).attr('class');
+  var originalQuality = $(this).siblings('.quality');
+  var index = qualityArray.indexOf(originalQuality.text());
+  var id = $(this).parents('.card')[0].id;
+
+  if(vote === 'card-buttons up-vote' && index < 2) {
+    originalQuality.text(qualityArray[index + 1]);
+  } else if( vote === 'card-buttons down-vote' && index > -1) {
+    originalQuality.text(qualityArray[index - 1]);
   }
-});
+  changeQualityInStorage(id, originalQuality);
+}
 
-$('.idea-list').on('click', '.down-vote', function () {
-  if ($(this).closest('nav').children('p').text() === 'quality: genius'){
-      $(this).siblings('.quality').text('quality: plausible');
-      var id = this.closest('article').getAttribute('id');
-      var retrievedObject = localStorage.getItem(id);
-      var parsedObject = JSON.parse(retrievedObject);;
-      parsedObject.quality = 'plausible';
-      pushToStorage(id, parsedObject);
-  } else if ($(this).closest('nav').children('p').text() === 'quality: plausible') {
-      $(this).siblings('.quality').text('quality: swill');
-      var id = this.closest('article').getAttribute('id');
-      var retrievedObject = localStorage.getItem(id);
-      var parsedObject = JSON.parse(retrievedObject);
-      parsedObject.quality = 'swill';
-      pushToStorage(id, parsedObject);
-    }
-});
+function changeQualityInStorage(id, updatedQuality) {
+  var retrievedObject = localStorage.getItem(id);
+  var parsedObject = JSON.parse(retrievedObject);
+  parsedObject.quality = updatedQuality.text();
+  pushToStorage(id, parsedObject);
+}
 
-$('.idea-list').on('click', '.delete-button', deleteCard);
 function deleteCard() {
   var id = this.closest('article').getAttribute('id');
   localStorage.removeItem(id);
   this.closest('article').remove();
 };
 
-function editTitle(card) {
+function editTitle() {
   var id = this.closest('article').getAttribute('id');
   var newTitle = $(this).closest('.card-title').text();
   var retrievedObject = localStorage.getItem(id);
@@ -118,7 +114,7 @@ function editTitle(card) {
   pushToStorage(id, parsedObject);
 };
 
-function editBody(card) {
+function editBody() {
   var id = this.closest('article').getAttribute('id');
   var newTitle = $(this).closest('.card-body').text();
   var retrievedObject = localStorage.getItem(id);
@@ -142,6 +138,6 @@ function searchList(e) {
       $($('h2')[i]).parent().hide();
     } else if (searchInputTitle === true || searchInputBody === true) {
       $($('h2')[i]).parent().show();
-      }
+    }
   }
 }
